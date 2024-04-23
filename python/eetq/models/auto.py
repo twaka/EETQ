@@ -6,7 +6,8 @@ from eetq.models.base import BaseEETQForCausalLM
 EETQ_CAUSAL_LM_MODEL_MAP = {
     "llama": LlamaEETQForCausalLM,
     "baichuan": BaichuanEETQForCausalLM,
-    "gemma": GemmaEETQForCausalLM
+    "gemma": GemmaEETQForCausalLM,
+    "qwen": QwenEETQForCausalLM,
 }
 
 def check_and_get_model_type(model_dir, trust_remote_code=True):
@@ -36,3 +37,4 @@ class AutoEETQForCausalLM:
                        trust_remote_code=True, fuse_layers=True, safetensors=True,
                        device_map="balanced", offload_folder=None, **config_kwargs) -> BaseEETQForCausalLM:
         pass
+

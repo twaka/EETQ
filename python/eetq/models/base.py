@@ -34,7 +34,8 @@ from ._config import EETQConfig
 TRANSFORMERS_AUTO_MAPPING_DICT = {
     "llama": "AutoModelForCausalLM",
     "baichuan": "AutoModelForCausalLM",
-    "gemma": "AutoModelForCausalLM"
+    "gemma": "AutoModelForCausalLM",
+    "qwen": "AutoModelForCausalLM",
 }
 
 
@@ -301,3 +302,4 @@ class BaseEETQForCausalLM(nn.Module):
 
             torch.cuda.empty_cache()
             gc.collect()
+
