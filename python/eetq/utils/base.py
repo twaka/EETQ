@@ -51,7 +51,7 @@ def replace_fused_qkv(layer, name, new_module):
     setattr(mod_, levels[-1], new_module)
 
     
-def replace_fused_gateup(layer, name, new_module):
+def replace_fused_gateup(layer, name, new_module, gate_proj="gate_proj", up_proj="up_proj"):
     levels = name.split('.')
     mod_ = layer
     for l_idx in range(len(levels)-1):
@@ -59,8 +59,8 @@ def replace_fused_gateup(layer, name, new_module):
             mod_ = mod_[int(levels[l_idx])]
         else:
             mod_ = getattr(mod_, levels[l_idx])
-    delattr(mod_, 'gate_proj')
-    delattr(mod_, 'up_proj')
+    delattr(mod_, gate_proj)
+    delattr(mod_, up_proj)
     setattr(mod_, levels[-1], new_module)
 
     
@@ -100,7 +100,7 @@ def replace_split_qkv(layer, name, old_module, index_map):
     setattr(mod_, 'v_proj', v)
 
 
-def replace_split_gateup(layer, name, old_module, index_map):
+def replace_split_gateup(layer, name, old_module, index_map, gate_proj="gate_proj", up_proj="up_proj"):
     device = old_module.qweight.device
     gate_weight = old_module.qweight[:, index_map[0]: index_map[1]]
     up_weight = old_module.qweight[:, index_map[1]: ]
@@ -125,8 +125,8 @@ def replace_split_gateup(layer, name, old_module, index_map):
         else:
             mod_ = getattr(mod_, levels[l_idx])
     delattr(mod_, 'gateup_proj')
-    setattr(mod_, 'gate_proj', gate)
-    setattr(mod_, 'up_proj', up)
+    setattr(mod_, gate_proj, gate)
+    setattr(mod_, up_proj, up)
 
 
 def split_tp_column(layer, name, old_module, tp):
